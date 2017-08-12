@@ -1,5 +1,7 @@
 FROM debian:stretch
 
+ENV DEBIAN_FRONTEND noninteractive
+
 ENV APACHE_CONFDIR /etc/apache2
 ENV APACHE_ENVVARS $APACHE_CONFDIR/envvars
 ENV APACHE_RUN_USER www-data
@@ -23,14 +25,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         php7.0-xml php7.0-mbstring php7.0-zip git \
 	&& rm -rf /var/lib/apt/lists/*
 
+COPY mysql_pubkey.asc /mysql_pubkey.asc
+
 RUN set -ex; \
-# gpg: key 5072E1F5: public key "MySQL Release Engineering
-# <mysql-build@oss.oracle.com>" imported
 	key='A4A9406876FCBD3C456770C88C718D3B5072E1F5'; \
-	GNUPGHOME="/tmp/gnupghome"; mkdir -p "$GNUPGHOME"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
-	gpg --export "$key" > /etc/apt/trusted.gpg.d/mysql.gpg; \
-	rm -r "$GNUPGHOME"; \
+	gpg --import /mysql_pubkey.asc; \
+    gpg --export "$key" > /etc/apt/trusted.gpg.d/mysql.gpg; \
 	apt-key list > /dev/null
 
 RUN echo "deb http://repo.mysql.com/apt/debian/ stretch mysql-${MYSQL_MAJOR}" \
