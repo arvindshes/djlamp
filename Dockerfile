@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		apache2 php7.0 wget ca-certificates gnupg2 dirmngr gosu supervisor \
 		pwgen openssl perl php7.0-mysql php7.0-mbstring php7.0-mcrypt \
         php7.0-json php7.0-gd php7.0-curl php7.0-common php7.0-bz2 \
-        libapache2-mod-php7.0 libphp7.0-embed php7.0-bcmath \
+        libapache2-mod-php7.0 libphp7.0-embed php7.0-bcmath curl php7.0-cli \
+        php7.0-xml php7.0-mbstring php7.0-zip git \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
