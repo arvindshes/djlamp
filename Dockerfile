@@ -105,6 +105,9 @@ EXPOSE 3306
 ADD https://www.adminer.org/latest-mysql-en.php $WWW_ROOT_DIR/adminer/index.php
 RUN chmod 644 $WWW_ROOT_DIR/adminer/index.php
 
+ADD https://getcomposer.org/installer /var/www/html/composer-setup.php
+RUN php composer-setup.php --install-dir=/usr/bin --filename=composer
+
 COPY setup $WWW_ROOT_DIR/setup
 COPY *.sh /usr/local/bin/
 COPY *.conf /etc/supervisor/conf.d/
